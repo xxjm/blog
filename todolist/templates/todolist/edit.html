@@ -1,0 +1,146 @@
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="">
+    <meta name="author" content="Mark Otto, Jacob Thornton, and Bootstrap contributors">
+    <meta name="generator" content="Jekyll v3.8.6">
+    <title>myblog</title>
+
+    <link rel="canonical" href="https://getbootstrap.com/docs/4.4/examples/navbar-static/">
+
+    <!-- Bootstrap core CSS -->
+<link href="https://cdn.bootcss.com/bootstrap/4.1.1/css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- Favicons -->
+<link rel="apple-touch-icon" href="/docs/4.4/assets/img/favicons/apple-touch-icon.png" sizes="180x180">
+<link rel="icon" href="/docs/4.4/assets/img/favicons/favicon-32x32.png" sizes="32x32" type="image/png">
+<link rel="icon" href="/docs/4.4/assets/img/favicons/favicon-16x16.png" sizes="16x16" type="image/png">
+<link rel="manifest" href="/docs/4.4/assets/img/favicons/manifest.json">
+<link rel="mask-icon" href="/docs/4.4/assets/img/favicons/safari-pinned-tab.svg" color="#563d7c">
+<link rel="icon" href="/docs/4.4/assets/img/favicons/favicon.ico">
+<meta name="msapplication-config" content="/docs/4.4/assets/img/favicons/browserconfig.xml">
+<meta name="theme-color" content="#563d7c">
+
+
+    <style>
+      .bd-placeholder-img {
+        font-size: 1.35rem;
+        text-anchor: middle;
+        -webkit-user-select: none;
+        -moz-user-select: none;
+        -ms-user-select: none;
+        user-select: none;
+      }
+
+      @media (min-width: 768px) {
+        .bd-placeholder-img-lg {
+          font-size: 3.5rem;
+        }
+      }
+    </style>
+    <!-- Custom styles for this template -->
+    <style >
+    	#topnav{
+    		font-size: 1.5em;
+    		height: 3em;
+    	}
+    </style>>
+    <link href="navbar-top.css" rel="stylesheet">
+  </head>
+  <body>
+    <nav class="navbar navbar-expand-md navbar-dark bg-dark mb-4" id="topnav">
+  <a class="navbar-brand" href="#">XXJM</a>
+  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
+    <span class="navbar-toggler-icon"></span>
+  </button>
+  <div class="collapse navbar-collapse" id="navbarCollapse">
+    <ul class="navbar-nav mr-auto">
+      <li class="nav-item">
+        <a class="nav-link" href="{% url '主页' %}">首页</a>
+      </li>
+
+      <li class="nav-item" active>
+        <a class="nav-link" href="#">日常事项</a>
+      </li>
+
+       <li class="nav-item" active>
+        <a class="nav-link" href="#">日志</a>
+      </li>
+      
+      
+ 
+    </ul>
+    <form class="form-inline mt-2 mt-md-0 " method="POST">
+      {% csrf_token %}
+      <input name="待办事项" class="form-control mr-sm-2" type="text" placeholder="计划" aria-label="Search" value="{{ 更改内容 }}">
+      <button class="btn btn-outline-success my-2 my-sm-0" type="submit">给我找</button>
+    </form>
+  </div>
+</nav>
+
+<main role="main" class="container">
+  {{ 警告 }}
+	<br>
+	<div class="table-responsive">
+		<table class="table table-hover">
+		  <thead class="thead-light">
+		    <tr>
+		      <th scope="col">#</th>
+		      <th scope="col">计划</th>
+		      <th scope='col'>编辑</th>
+		      <th scope="col">划掉</th>
+		      <th scope="col">删除</th>
+		    </tr>
+		  </thead>
+			  <tbody class="no-underline">
+
+          {% for i in 清单 %}
+            {% if i.done %}
+               <tr class="table-dark">
+                  <th class="text-dark" scope="row">{{forloop.counter}}</th>>
+                  <td class="text-dark" >{{i.thing}}</td>
+                  <td class="text-secondary">不可编辑</td>
+
+                  <td><form method="POST" action="{% url 'todolist:划掉' i.id %}">
+                    {% csrf_token %}
+                    <input name="完成状态" type="hidden" value="未完成">
+                 <button type="submit" class="btn btn-danger btn-sm ">撤销</button>
+                      </form></td>
+
+                  <td><form method="POST" action="{% url 'todolist:删除' i.id %}">
+                    {% csrf_token %}
+                 <button type="submit" class="btn btn-danger btn-sm ">删除</button>
+                    </form>
+                  </td>
+            {% else %}
+                <tr>
+                  <th scope="row">{{forloop.counter}}</th>
+                  <td>{{i.thing}}</td>
+                  <td><a class="text-info" href="{% url 'todolist:编辑' i.id %}">编辑</a></td>
+
+                  <td><form method="POST" action="{% url 'todolist:划掉' i.id %}">
+                        {% csrf_token %}
+                        <input name="完成状态" type="hidden" value="已完成">
+                     <button type="submit" class="btn btn-danger btn-sm ">划掉</button>
+                        </form>
+                  </td>
+              <td><form method="POST" action="{% url 'todolist:删除' i.id %}">
+                {% csrf_token %}
+                 <button type="submit" class="btn btn-danger btn-sm ">删除</button>
+                }
+               </form>
+              </td>
+             </tr>
+            {% endif %}
+          {% endfor %}
+			  </tbody>
+		</table>
+  </div>
+</main>
+<!-- bootstrap>=======<--> 
+ <script src="https//cdn.bootcss.com/bootstrap/4.1.1/js/bootstrap.bundle.min.js"></script>
+ </body>
+</html>
